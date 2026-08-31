@@ -61,6 +61,8 @@ def main():
     bbox = cfg["bounding_boxes"][args.extent]
     start, end, tag = date_window(args.days, args.end_date)
 
+    earthaccess.login(persist=True)
+
     results = earthaccess.search_data(
         short_name=cfg["pace_short_name"],
         temporal=(start, end),

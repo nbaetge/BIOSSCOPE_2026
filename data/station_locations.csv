@@ -1,7 +1,7 @@
 station,latitude,longitude,original_coordinate,coordinate_status,source
-BATS,31.833333,-64.166667,"31°50'N, 64°10.00'W",verify,"User-provided AE2624 planning coordinate"
-Hydrostation S,32.166667,-64.500000,"32°10.00'N, 64°30.00'W",provided,"User-provided"
-Station 13,32.100000,-64.095000,"32.10°N, 63°65.70'W",verify_normalized,"User-provided; longitude normalized to 64°05.70'W because minutes exceeded 60"
-Station 11,31.175000,-64.324333,"31°10.50'N, 64°19.46'W",provided,"User-provided"
-Station 3,32.158500,-64.010167,"32°09.51'N, 64°00.61'W",provided,"User-provided"
-Station 1,31.750000,-64.650000,"approximate",approximate,"Estimated from historical BATS-grid figure; replace with authoritative coordinate"
+BATS,31.833333,-64.166667,"31°50.00'N, 64°10.00'W",verify,"User-provided AE2624 planning coordinate; verify against final navigation plan"
+Hydrostation S,32.166667,-64.500000,"32°10.00'N, 64°30.00'W",published,"Venter et al. (2004), supporting Table S1"
+Station 13,31.535000,-63.595000,"31°32.10'N, 63°35.70'W",published,"Venter et al. (2004), supporting Table S1"
+Station 11,31.175000,-64.324333,"31°10.50'N, 64°19.46'W",published,"Venter et al. (2004), supporting Table S1"
+Station 3,32.158500,-64.010167,"32°09.51'N, 64°00.61'W",published,"Venter et al. (2004), supporting Table S1"
+Station 1,31.750000,-64.650000,"approximate",approximate,"Estimated from historical BATS-grid figure; replace when authoritative coordinate is found"
