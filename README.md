@@ -57,9 +57,13 @@ From a Jupyter notebook opened at the repository root, the same command can be r
 
 - `config/map_config.json` - cruise dates and named bounding boxes
 - `data/station_locations.csv` - station coordinates and provenance
+- `notebooks/BIOSSCOPE_AE2624_PACE_CHL_Last8Days.ipynb` - notebook workflow for PACE composites and change maps
+- `scripts/BIOSSCOPE_AE2624_argoFloats_context.Rmd` - BGC-Argo track, profile, and Hovmöller workflow
 - `scripts/pace_chl_context.py` - PACE rolling-median map workflow
 - `scripts/update_fig_index.R` - refreshes archive links and latest previews
 - `figs/` - generated figure archives and latest products
+
+Raw downloaded Argo NetCDF files are kept locally under `data/argo/` and excluded from Git. Generated context figures are intentionally tracked so they can be viewed directly on GitHub, matching the SPARC repository workflow.
 
 ## Coordinate conventions
 
@@ -71,6 +75,12 @@ From a Jupyter notebook opened at the repository root, the same command can be r
 
 ### Latest previews
 
-_No figures generated yet._
+**PACE satellite context**
+
+![](figs/latest/satellite/PACE_CHL_last8d_median_20260830.png)
+
+**BGC-Argo float context**
+
+![](figs/latest/float/Float_6999997_20260831.png)
 
 <!-- BIOSSCOPE_CONTEXT_PREVIEWS -->

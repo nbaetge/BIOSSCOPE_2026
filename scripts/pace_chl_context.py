@@ -93,7 +93,8 @@ def main():
     ax.xaxis.set_major_formatter(LongitudeFormatter()); ax.yaxis.set_major_formatter(LatitudeFormatter())
 
     for _, row in stations.iterrows():
-        approx = row["coordinate_status"] in {"approximate", "verify_normalized", "verify"}
+        coordinate_status = str(row.get("coordinate_status", "")).lower()
+        approx = coordinate_status in {"approximate", "verify_normalized", "verify"}
         marker = "^" if approx else "o"
         face = "none" if approx else "white"
         ax.scatter(row.longitude, row.latitude, s=52, marker=marker, facecolors=face, edgecolors="black", linewidths=1.1, transform=crs, zorder=5)
