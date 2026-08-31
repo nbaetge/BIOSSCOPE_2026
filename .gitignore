@@ -1,0 +1,14 @@
+.DS_Store
+.Rhistory
+.RData
+.Rproj.user/
+.venv/
+__pycache__/
+*.pyc
+*.nc
+*.zip
+*.tar
+data/cache/
+figs/satellite_composites_*/
+figs/latest/
+figs/latest_sat/

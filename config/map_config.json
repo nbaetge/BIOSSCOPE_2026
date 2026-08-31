@@ -1,0 +1,13 @@
+{
+  "cruise": "BIOS-SCOPE AE2624",
+  "mobilization_date": "2026-10-02",
+  "at_sea_start": "2026-10-03",
+  "at_sea_end": "2026-10-06",
+  "demobilization_date": "2026-10-08",
+  "pace_short_name": "PACE_OCI_L3M_CHL_NRT",
+  "pace_resolution_tag": "0p1deg",
+  "bounding_boxes": {
+    "detail": [-64.80, 31.00, -63.85, 32.35],
+    "regional": [-65.00, 30.00, -62.00, 33.00]
+  }
+}
