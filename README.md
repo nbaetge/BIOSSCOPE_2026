@@ -1,84 +1,47 @@
 # BIOS-SCOPE 2026 Cruise Context
 
-Environmental-context maps and supporting station metadata for BIOS-SCOPE cruise AE2624 aboard the R/V *Atlantic Explorer* (October 2026).
+Current environmental context for BIOS-SCOPE cruise AE2624 aboard the R/V *Atlantic Explorer* in October 2026. This repository is intended primarily for cruise participants to view recent satellite and autonomous-float conditions near the planned work area.
 
-The initial workflow is patterned after the SPARC 2025 cruise-context repository and is set up to generate NASA PACE OCI chlorophyll maps with the BIOS-SCOPE stations overlaid.
+## Latest conditions
 
-## Map extents
+- [Latest PACE satellite products](figs/latest_sat/)
+- [Latest BGC-Argo float products](figs/latest_float/)
+- [All dated figure archives](figs/README.md)
 
-PACE/Earthaccess bounding boxes use `(west, south, east, north)`:
+### PACE chlorophyll
 
-- **Detailed station map:** `(-64.80, 31.00, -63.40, 32.35)`
-- **Regional context map:** `(-65.00, 30.00, -62.00, 33.00)`
-
-The workflow requests the 4 km PACE product, matching the SPARC notebook and providing substantially finer source pixels than the 0.1° product.
-
-## Station locations
-
-The source of truth is [`data/station_locations.csv`](data/station_locations.csv). Hydrostation S and Stations 3, 11, and 13 are from Venter et al. (2004), supporting Table S1. West longitudes are negative.
-
-| Station | Latitude | Longitude 
-|---|---:|---:|---|
-| BATS | 31.833333 | -64.166667 
-| Hydrostation S | 32.166667 | -64.500000 
-| Station 13 | 31.535000 | -63.595000 
-| Station 11 | 31.175000 | -64.324333 
-| Station 3 | 32.158500 | -64.010167 
-| Station 1 | 31.750000 | -64.650000 
-
-
-## Quick start
-
-1. Create a Python environment and install the packages in `requirements.txt`.
-2. Authenticate Earthdata when prompted by `earthaccess`.
-3. Run:
-
-```bash
-python scripts/pace_chl_context.py --extent detail --days 8
-```
-
-For the larger historical-grid view:
-
-```bash
-python scripts/pace_chl_context.py --extent regional --days 8
-```
-
-Outputs are written beneath `figs/satellite_composites_YYYYMMDD/` as a high-resolution PNG and PDF. The PDF preserves vector labels and station symbols while the satellite raster remains at its native resolution.
-
-From a Jupyter notebook opened at the repository root, the same command can be run in a cell:
-
-```python
-%run scripts/pace_chl_context.py --extent detail --days 8 --dpi 400
-```
-
-## Repository layout
-
-- `config/map_config.json` - cruise dates and named bounding boxes
-- `data/station_locations.csv` - station coordinates and provenance
-- `notebooks/BIOSSCOPE_AE2624_PACE_CHL_Last8Days.ipynb` - notebook workflow for PACE composites and change maps
-- `scripts/BIOSSCOPE_AE2624_argoFloats_context.Rmd` - BGC-Argo track, profile, and Hovmöller workflow
-- `scripts/pace_chl_context.py` - PACE rolling-median map workflow
-- `scripts/update_fig_index.R` - refreshes archive links and latest previews
-- `figs/` - generated figure archives and latest products
-
-Raw downloaded Argo NetCDF files are kept locally under `data/argo/` and excluded from Git. Generated context figures are intentionally tracked so they can be viewed directly on GitHub, matching the SPARC repository workflow.
-
-## Coordinate conventions
-
-- Decimal degrees use positive north and negative west.
-- Degrees-minutes conversion is `decimal = degrees + minutes / 60`, with a negative sign applied to west longitude.
-- Do not silently normalize or replace coordinates: update the CSV status/source columns at the same time.
-
-<!-- BIOSSCOPE_CONTEXT_PREVIEWS -->
-
-### Latest previews
-
-**PACE satellite context**
+The map below is the latest rolling 8-day median of PACE OCI chlorophyll. Cruise stations are overlaid for geographic context.
 
 ![](figs/latest/satellite/PACE_CHL_last8d_median_20260830.png)
 
-**BGC-Argo float context**
+### BGC-Argo float context
+
+The float composite includes the recent track, vertical profiles, and time-depth fields for an active float near the study region.
 
 ![](figs/latest/float/Float_6999997_20260831.png)
 
-<!-- BIOSSCOPE_CONTEXT_PREVIEWS -->
+## Planned station region
+
+The detailed PACE map covers `(west, south, east, north)`:
+
+`(-64.80, 31.00, -63.40, 32.35)`
+
+Station coordinates are stored in [`data/station_locations.csv`](data/station_locations.csv). West longitudes are negative.
+
+| Station | Latitude | Longitude | Status |
+|---|---:|---:|---|
+| BATS | 31.833333 | -64.166667 | Planning coordinate; verify against the final navigation plan |
+| Hydrostation S | 32.166667 | -64.500000 | Venter et al. (2004), supporting Table S1 |
+| Station 13 | 31.535000 | -63.595000 | Venter et al. (2004), supporting Table S1 |
+| Station 11 | 31.175000 | -64.324333 | Venter et al. (2004), supporting Table S1 |
+| Station 3 | 32.158500 | -64.010167 | Venter et al. (2004), supporting Table S1 |
+| Station 1 | 31.750000 | -64.650000 | Approximate; replace when an authoritative coordinate is available |
+
+## How the figures are produced
+
+- PACE composites are generated in the CryoCloud Jupyter environment using the maintained 8-day notebook. A snapshot of that notebook is retained in [`notebooks/BIOSSCOPE_AE2624_PACE_CHL_Last8Days.ipynb`](notebooks/BIOSSCOPE_AE2624_PACE_CHL_Last8Days.ipynb) for provenance.
+- BGC-Argo context figures are generated with [`scripts/BIOSSCOPE_AE2624_argoFloats_context.Rmd`](scripts/BIOSSCOPE_AE2624_argoFloats_context.Rmd).
+- [`scripts/update_fig_index.R`](scripts/update_fig_index.R) refreshes the dated archives and `latest` figure folders.
+- Raw downloaded Argo files remain local under `data/argo/` and are not included in Git.
+
+The generated PNG files are intended for quick viewing and insertion into cruise-planning documents. Matching PDFs preserve higher-quality text and station symbols.
