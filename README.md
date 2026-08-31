@@ -30,12 +30,12 @@ Station coordinates are stored in [`data/station_locations.csv`](data/station_lo
 
 | Station | Latitude | Longitude | Status |
 |---|---:|---:|---|
-| BATS | 31.833333 | -64.166667 | Planning coordinate; verify against the final navigation plan |
+| BATS | 31.833333 | -64.166667 | Planning coordinate |
 | Hydrostation S | 32.166667 | -64.500000 | Venter et al. (2004), supporting Table S1 |
 | Station 13 | 31.535000 | -63.595000 | Venter et al. (2004), supporting Table S1 |
 | Station 11 | 31.175000 | -64.324333 | Venter et al. (2004), supporting Table S1 |
 | Station 3 | 32.158500 | -64.010167 | Venter et al. (2004), supporting Table S1 |
-| Station 1 | 31.750000 | -64.650000 | Approximate; replace when an authoritative coordinate is available |
+| Station 1 | 31.750000 | -64.650000 | Approximate, not reported in Venter et al. (2004) |
 
 ## How the figures are produced
 
