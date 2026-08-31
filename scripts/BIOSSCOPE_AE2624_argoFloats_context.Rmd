@@ -1,5 +1,5 @@
 ---
-title: "BIOS-SCOPE AE2624 BGC-Argo Float Context"
+title: "BIOS-SCOPE AE2624 Argo Float Context"
 author: "Nicholas Baetge"
 date: "2026-08-31"
 output: html_document
@@ -114,11 +114,33 @@ parse_cycle <- function(x){
   if (length(hit) && length(hit[[1]]) >= 2) as.integer(hit[[1]][2]) else NA_integer_
 }
 
-## Index: download & filter ----------------------------------------------------
-message("Loading synthetic index...")
-idx_all <- getIndex("synthetic", destdir = destdir)
+## Indices: Core + Deep Argo, plus synthetic BGC-Argo -------------------------
+# The core index contains Core Argo and Deep Argo profiles. The synthetic index
+# contains BGC-Argo profiles with core and biogeochemical variables together.
+# When a float occurs in both, retain its synthetic profiles and omit duplicate
+# core files for that float.
+message("Loading Core/Deep Argo index...")
+idx_core_all <- getIndex("core", destdir = destdir)
+message("Loading synthetic BGC-Argo index...")
+idx_synthetic_all <- getIndex("synthetic", destdir = destdir)
 
-idx_region <- subset(idx_all, rectangle = list(longitude = lonlim, latitude = latlim))
+idx_core_region <- subset(idx_core_all, rectangle = list(longitude = lonlim, latitude = latlim))
+idx_synthetic_region <- subset(idx_synthetic_all, rectangle = list(longitude = lonlim, latitude = latlim))
+
+combine_prefer_synthetic <- function(core_idx, synthetic_idx) {
+  n_core <- length(core_idx[["time"]])
+  n_synthetic <- length(synthetic_idx[["time"]])
+  if (!n_synthetic) return(core_idx)
+  if (!n_core) return(synthetic_idx)
+
+  synthetic_ids <- unique(as.numeric(synthetic_idx[["ID"]]))
+  core_only_ids <- setdiff(unique(as.numeric(core_idx[["ID"]])), synthetic_ids)
+  if (!length(core_only_ids)) return(synthetic_idx)
+  core_only <- subset(core_idx, ID = core_only_ids)
+  merge(synthetic_idx, core_only)
+}
+
+idx_region <- combine_prefer_synthetic(idx_core_region, idx_synthetic_region)
 idx_region_m <- subset_by_months(idx_region, months_keep)
 
 if (is.numeric(days_back) && days_back > 0) {
