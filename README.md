@@ -11,22 +11,20 @@ PACE/Earthaccess bounding boxes use `(west, south, east, north)`:
 - **Detailed station map:** `(-64.80, 31.00, -63.40, 32.35)`
 - **Regional context map:** `(-65.00, 30.00, -62.00, 33.00)`
 
-The detailed box gives useful padding around all currently listed stations, including the approximate Station 1. The regional box reproduces the geographic coverage of the older BATS-grid figure and is better when mesoscale eddy context matters.
-
 The workflow requests the 4 km PACE product, matching the SPARC notebook and providing substantially finer source pixels than the 0.1° product.
 
 ## Station locations
 
 The source of truth is [`data/station_locations.csv`](data/station_locations.csv). Hydrostation S and Stations 3, 11, and 13 are from Venter et al. (2004), supporting Table S1. West longitudes are negative.
 
-| Station | Latitude | Longitude | Status |
+| Station | Latitude | Longitude 
 |---|---:|---:|---|
-| BATS | 31.833333 | -64.166667 | User-provided; verify against the final navigation plan |
-| Hydrostation S | 32.166667 | -64.500000 | Published Table S1 coordinate |
-| Station 13 | 31.535000 | -63.595000 | Published Table S1 coordinate |
-| Station 11 | 31.175000 | -64.324333 | Published Table S1 coordinate |
-| Station 3 | 32.158500 | -64.010167 | Published Table S1 coordinate |
-| Station 1 | 31.750000 | -64.650000 | Approximate from the historical map; replace when authoritative coordinate is found |
+| BATS | 31.833333 | -64.166667 
+| Hydrostation S | 32.166667 | -64.500000 
+| Station 13 | 31.535000 | -63.595000 
+| Station 11 | 31.175000 | -64.324333 
+| Station 3 | 32.158500 | -64.010167 
+| Station 1 | 31.750000 | -64.650000 
 
 
 ## Quick start
