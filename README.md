@@ -12,13 +12,17 @@ Current environmental context for BIOS-SCOPE cruise AE2624 aboard the R/V *Atlan
 
 The map below is the latest rolling 8-day median of PACE OCI chlorophyll. Cruise stations are overlaid for geographic context.
 
-![](figs/latest/satellite/PACE_CHL_last8d_median_20260830.png)
+![](figs/latest_sat/PACE_CHL_last8d_median_20260907.png)
+
+The map below is the percent change between the latest and the previous 8-day median PACE OCI chlorophyll. 
+
+![](figs/latest_sat/PACE_CHL_pct_change_last8d_vs_prev_20260907.png)
 
 ### Argo float context
 
 The float composites include recent tracks, vertical profiles, and time-depth fields for available Core Argo, BGC-Argo, and Deep Argo floats near the study region.
 
-![](figs/latest/float/Float_6999997_20260831.png)
+![](figs/latest_float/Float_6999997_20260908.png)
 
 ## Planned station region
 
