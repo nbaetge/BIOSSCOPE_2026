@@ -140,7 +140,8 @@ combine_prefer_synthetic <- function(core_idx, synthetic_idx) {
   merge(synthetic_idx, core_only)
 }
 
-idx_region <- combine_prefer_synthetic(idx_core_region, idx_synthetic_region)
+# idx_region <- combine_prefer_synthetic(idx_core_region, idx_synthetic_region)
+idx_region <- idx_synthetic_region
 idx_region_m <- subset_by_months(idx_region, months_keep)
 
 if (is.numeric(days_back) && days_back > 0) {
@@ -248,6 +249,7 @@ tidy_list <- lapply(seq_along(argo_qc_list), function(i){
   no3_nm <- pick_name(nms,  c("nitrateAdjusted","nitrate","NITRATE_ADJUSTED","NITRATE"))
   ph_nm  <- pick_name(nms,  c("pHAdjusted","pH","PH_IN_SITU_TOTAL_ADJUSTED","PH_IN_SITU_TOTAL"))
   bbp_nm <- pick_bbp_any(nms)
+  cdom_nm <- pick_name(nms, c("CDOMAdjusted", "CDOM", "cdomAdjusted", "cdom"))
 
   # vectors (elementwise coalesce QC -> RAW for core)
   P <- ecoalesce(getv(d, p_nm), getv(dR, p_nmR))
@@ -270,14 +272,15 @@ tidy_list <- lapply(seq_along(argo_qc_list), function(i){
   N3 <- getv(d, no3_nm)
   pH <- getv(d, ph_nm)
   B  <- getv(d, bbp_nm)
+  CD <- getv(d, cdom_nm)
 
   len <- max(c(length(P), length(T), length(S),
-               length(Ch), length(PR), length(O2), length(N3), length(pH), length(B)), na.rm = TRUE)
+               length(Ch), length(PR), length(O2), length(N3), length(pH), length(B), length(CD)), na.rm = TRUE)
   if (!is.finite(len) || len == 0) return(NULL)
 
   P  <- pad(P,  len); T <- pad(T, len); S <- pad(S, len)
   Ch <- pad(Ch, len); PR <- pad(PR, len); O2 <- pad(O2, len)
-  N3 <- pad(N3, len); pH <- pad(pH, len); B  <- pad(B,  len)
+  N3 <- pad(N3, len); pH <- pad(pH, len); B  <- pad(B,  len); CD <- pad(CD, len)
 
   # robust ID/coords
   file_base <- if (!is.null(m$filename) && length(m$filename)) basename(m$filename) else NA_character_
@@ -294,7 +297,7 @@ tidy_list <- lapply(seq_along(argo_qc_list), function(i){
     lat   = rep(if (length(m$latitude))  as.numeric(m$latitude)  else NA_real_, len),
     file  = rep(file_base, len),
     pressure=P, temperature=T, salinity=S, density=rho, sigmaTheta=sig,
-    PAR=PR, chlorophyll=Ch, bbp=B, nitrate=N3, oxygen=O2, pH=pH,
+    PAR=PR, chlorophyll=Ch, bbp=B, CDOM=CD, nitrate=N3, oxygen=O2, pH=pH,
     stringsAsFactors = FALSE
   )
 })
@@ -312,14 +315,40 @@ tidy <- tidy %>%
   select(-lon_i, -lat_i, -dt_i)
 
 ## Depth in meters; clean oxygen negatives ------------------------------------
+
 tidy <- tidy %>%
+  group_by(ID, cycle_parsed) %>%
   mutate(
-    depth_m_calc = tryCatch(oce::swDepth(pressure, lat), error = function(e) rep(NA_real_, length(pressure))),
-    depth_m = ifelse(is.finite(depth_m_calc), depth_m_calc,
-                     ifelse(is.finite(pressure), pressure, NA_real_))
+    depth_m_calc = {
+      profile_lat <- lat[is.finite(lat)]
+
+      if (!length(profile_lat)) {
+        rep(NA_real_, n())
+      } else {
+        converted <- tryCatch(
+          oce::swDepth(
+            as.numeric(pressure),
+            as.numeric(profile_lat[[1]])
+          ),
+          error = function(e) rep(NA_real_, n())
+        )
+
+        as.numeric(converted)
+      }
+    },
+    depth_m = ifelse(
+      is.finite(depth_m_calc),
+      depth_m_calc,
+      ifelse(is.finite(pressure), pressure, NA_real_)
+    ),
+    oxygen = ifelse(
+      is.finite(oxygen) & oxygen >= 0,
+      oxygen,
+      NA_real_
+    )
   ) %>%
-  select(-depth_m_calc) %>%
-  mutate(oxygen = ifelse(oxygen < 0, NA_real_, oxygen))
+  ungroup() %>%
+  select(-depth_m_calc)
 
 ## Quick data-availability check (0–500 m) ------------------------------------
 check <- tidy |>
